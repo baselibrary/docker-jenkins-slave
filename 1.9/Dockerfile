@@ -10,13 +10,17 @@ RUN \
 RUN \
   apt-get update &&\
   apt-get install -y docker-engine=1.9.1-0~trusty git cvs subversion mercurial openssh-server &&\
-  useradd -c "Jenkins user" -d /home/jenkins -m jenkins -p jenkins &&\
-  usermod -a -G root jenkins &&\
-  mkdir -p /var/run/sshd &&\
   rm -rf /var/lib/apt/lists/*
 
+## Configurations
+RUN \
+  mkdir -p /var/run/sshd &&\
+  sed -i "s/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config &&\
+  sed -i "s/UsePAM.*/UsePAM no/g"                                 /etc/ssh/sshd_config &&\
+  sed -i "s/PermitRootLogin.*/PermitRootLogin yes/g"              /etc/ssh/sshd_config
+
 ## Environments
-ENV HOME /home/jenkins
+ENV AUTHORIZED_KEYS **None**
 
 ## Scripts
 ADD docker-entrypoint.sh /docker-entrypoint.sh
@@ -24,7 +28,7 @@ RUN chmod a+x            /docker-entrypoint.sh
 
 EXPOSE 22
 
-VOLUME ["/home/jenkins"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["/usr/sbin/sshd", "-D"]
 
