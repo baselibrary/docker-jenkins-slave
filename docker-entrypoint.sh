@@ -4,31 +4,32 @@
 set -e -m
 
 #####   variables  #####
+: ${SSH_PASS:=jenkins}
 
 # add command if needed
 if [ "${1:0:1}" = '-' ]; then
-  set -- java "$@"
+  set -- /usr/sbin/sshd "$@"
 fi
 
 #run command in background
-if [ "$1" = 'java' ]; then
+if [ "$1" = '/usr/sbin/sshd' ]; then
   ##### pre scripts  #####
   echo "========================================================================"
-  echo "initialize:"
+  echo "initialize: update the password and authorized_key                      "
   echo "========================================================================"
-  mkdir -p "$JENKINS_HOME" && chown -R jenkins:jenkins "$JENKINS_HOME"
+  if [ "$AUTHORIZED_KEYS" ]; then
+    /usr/bin/ansible local -o -c local -m authorized_key  -a "user=root key=${AUTHORIZED_KEYS}"
+  fi
+  if [ "$SSH_PASS" ]; then
+    echo "root:$SSH_PASS" | chpasswd
+  fi
   
   ##### run scripts  #####
   echo "========================================================================"
-  echo "startup:"
+  echo "startup: sshd                                                           "
   echo "========================================================================"
-  exec gosu jenkins "$@" &
+  exec "$@" &
 
-  ##### post scripts #####
-  echo "========================================================================"
-  echo "configure:"
-  echo "========================================================================"
-  
   #bring command to foreground
   fg
 else

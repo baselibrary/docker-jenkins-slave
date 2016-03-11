@@ -4,47 +4,32 @@
 set -e -m
 
 #####   variables  #####
-: ${PASS:=jenkins}
+: ${SSH_PASS:=jenkins}
 
 # add command if needed
 if [ "${1:0:1}" = '-' ]; then
-  set -- sshd "$@"
+  set -- /usr/sbin/sshd "$@"
 fi
 
 #run command in background
-if [ "$1" = 'sshd' ]; then
+if [ "$1" = '/usr/sbin/sshd' ]; then
   ##### pre scripts  #####
   echo "========================================================================"
-  echo "initialize:"
+  echo "initialize: update the password and authorized_key                      "
   echo "========================================================================"
-  echo "root:$PASS" | chpasswd
-  if [ "${AUTHORIZED_KEYS}" != "**None**" ]; then
-    mkdir -p /root/.ssh && chmod 700 /root/.ssh
-    touch /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys
-    IFS=$'\n'
-    arr=$(echo ${AUTHORIZED_KEYS} | tr "," "\n")
-    for x in $arr
-    do
-      x=$(echo $x |sed -e 's/^ *//' -e 's/ *$//')
-      cat /root/.ssh/authorized_keys | grep "$x" >/dev/null 2>&1
-      if [ $? -ne 0 ]; then
-        echo "=> Adding public key to /root/.ssh/authorized_keys: $x"
-        echo "$x" >> /root/.ssh/authorized_keys
-      fi
-    done
+  if [ "$AUTHORIZED_KEYS" ]; then
+    /usr/bin/ansible local -o -c local -m authorized_key  -a "user=root key=${AUTHORIZED_KEYS}"
+  fi
+  if [ "$SSH_PASS" ]; then
+    echo "root:$SSH_PASS" | chpasswd
   fi
   
   ##### run scripts  #####
   echo "========================================================================"
-  echo "startup:"
+  echo "startup: sshd                                                           "
   echo "========================================================================"
   exec "$@" &
 
-  ##### post scripts #####
-  echo "========================================================================"
-  echo "configure:"
-  echo "========================================================================"
-  
   #bring command to foreground
   fg
 else

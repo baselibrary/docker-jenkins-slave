@@ -19,9 +19,6 @@ RUN \
   sed -i "s/UsePAM.*/UsePAM no/g"                                 /etc/ssh/sshd_config &&\
   sed -i "s/PermitRootLogin.*/PermitRootLogin yes/g"              /etc/ssh/sshd_config
 
-## Environments
-ENV AUTHORIZED_KEYS **None**
-
 ## Scripts
 ADD docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod a+x            /docker-entrypoint.sh
