@@ -12,6 +12,7 @@ RUN \
   apt-get install -y docker-engine=1.9.1-0~trusty git cvs subversion mercurial openssh-server &&\
   useradd -c "Jenkins user" -d /home/jenkins -m jenkins -p jenkins &&\
   usermod -a -G root jenkins &&\
+  mkdir -p /var/run/sshd &&\
   rm -rf /var/lib/apt/lists/*
 
 ## Environments
