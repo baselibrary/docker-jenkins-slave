@@ -2,7 +2,7 @@ FROM baselibrary/java:8
 MAINTAINER ShawnMa <qsma@thoughtworks.com>
 
 ## Version
-ENV DOCKER_VERSION 1.9.1-0~trusty
+ENV DOCKER_VERSION 1.10.3-0~trusty
 
 ## Repository
 RUN \

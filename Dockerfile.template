@@ -1,6 +1,9 @@
 FROM baselibrary/java:8
 MAINTAINER ShawnMa <qsma@thoughtworks.com>
 
+## Version
+ENV DOCKER_VERSION %%DOCKER_VERSION%%
+
 ## Repository
 RUN \
   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 2C52609D &&\
@@ -9,7 +12,7 @@ RUN \
 ## Packages
 RUN \
   apt-get update &&\
-  apt-get install -y docker-engine=1.9.1-0~trusty git cvs subversion mercurial openssh-server &&\
+  apt-get install -y docker-engine=$DOCKER_VERSION git cvs subversion mercurial openssh-server &&\
   rm -rf /var/lib/apt/lists/*
 
 ## Configurations

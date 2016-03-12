@@ -4,8 +4,9 @@
 
 ### Base Docker Image
 
-* `latest`: jenkins-slave 1.9
-* `1.625` : jenkins-slave 1.9
+* `latest`: jenkins-slave 1.10
+* `1.10` :  jenkins-slave 1.10
+* `1.9` :   jenkins-slave 1.9
 
 ### Installation
 
