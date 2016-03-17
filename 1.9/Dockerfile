@@ -26,6 +26,9 @@ RUN \
 ADD docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod a+x            /docker-entrypoint.sh
 
+## Environments
+ENV LANG=en_US.UTF-8
+
 EXPOSE 22
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
