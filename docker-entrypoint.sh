@@ -18,7 +18,7 @@ if [ "$1" = '/usr/sbin/sshd' ]; then
   echo "initialize: update the password and authorized_key                      "
   echo "========================================================================"
   if [ "$AUTHORIZED_KEYS" ]; then
-    /usr/bin/ansible local -o -c local -m authorized_key  -a "user=root key=${AUTHORIZED_KEYS}"
+    /usr/bin/ansible local -o -c local -m authorized_key  -a "user=root key='${AUTHORIZED_KEYS}'"
   fi
   if [ "$SSH_PASS" ]; then
     echo "root:$SSH_PASS" | chpasswd

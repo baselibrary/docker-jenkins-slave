@@ -11,7 +11,8 @@ versions=( "${versions[@]%/}" )
 
 
 for version in "${versions[@]}"; do	
-  fullVersion="$(curl -fsSL "https://apt.dockerproject.org/repo/dists/ubuntu-trusty/main/binary-amd64/Packages.gz" | gunzip | awk -F ': ' '$1 == "Package" { pkg = $2 } pkg ~ /^docker-engine$/ && $1 == "Version" { print $2 }'| grep "^$version" | sort -rV | head -n1 )"
+  repoPackage="https://apt.dockerproject.org/repo/dists/ubuntu-trusty/main/binary-amd64/Packages.gz"
+  fullVersion="$(curl -fsSL "${repoPackage}" | gunzip | awk -v pkgname="docker-engine" -F ': ' '$1 == "Package" { pkg = $2 } pkg == pkgname && $1 == "Version" { print $2 }' | grep "^$version" | sort -rV | head -n1 )"
 	(
 		set -x
 		cp docker-entrypoint.sh "$version/"
