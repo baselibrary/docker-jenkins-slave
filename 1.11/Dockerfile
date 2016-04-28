@@ -12,7 +12,7 @@ RUN \
 ## Packages
 RUN \
   apt-get update &&\
-  apt-get install -y docker-engine=$DOCKER_VERSION git cvs subversion mercurial openssh-server &&\
+  apt-get install -y docker-engine=$DOCKER_VERSION git cvs subversion mercurial make openssh-server &&\
   rm -rf /var/lib/apt/lists/*
 
 ## Configurations
