@@ -1,6 +1,6 @@
 NAME     = baselibrary/jenkins-slave
 REPO     = git@github.com:baselibrary/docker-jenkins-slave.git
-REGISTRY = thoughtworks.ga
+REGISTRY = thoughtworks.io
 VERSIONS = $(foreach df,$(wildcard */Dockerfile),$(df:%/Dockerfile=%))
 
 all: build 
