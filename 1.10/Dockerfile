@@ -2,12 +2,12 @@ FROM baselibrary/java:8
 MAINTAINER ShawnMa <qsma@thoughtworks.com>
 
 ## Version
-ENV DOCKER_VERSION 1.10.3-0~trusty
+ENV DOCKER_VERSION 
 
 ## Repository
 RUN \
   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 2C52609D &&\
-  echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list
+  echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" > /etc/apt/sources.list.d/docker.list
 
 ## Packages
 RUN \
@@ -31,5 +31,3 @@ EXPOSE 22
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["/usr/sbin/sshd", "-D"]
-
-
